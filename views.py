@@ -1,6 +1,6 @@
 from models import User
 from utils import template_pattern
-from flask import redirect, url_for, request
+from flask import redirect, url_for, request, render_template
 
 
 def index():
@@ -8,13 +8,18 @@ def index():
 
 
 def about():
-    return template_pattern("About Page ~", "orangered")
+    return render_template("about.html")
 
 
 def say_hello(name):
     from datetime import datetime as dt
     now = dt.now()
-    return template_pattern(f"Say hello from Flask to {name} at {now}", "green")
+    # return render_template("hi.html", datetime=now, name=name)
+    data = {
+        "datetime": now,
+        "name": name
+    }
+    return render_template("hi.html", data=data)
 
 
 def sum_func(number1, number2):
@@ -48,12 +53,13 @@ def requests_func():
 def users():
     if request.method == "GET":
         user_list = User.__users__
-        return {k: vars(user_list[k]) for k in user_list}
+        # return {k: vars(user_list[k]) for k in user_list}
+        return render_template("users.html", users=user_list.values() if user_list else False)
 
     elif request.method == "POST":
         request_json = request.json
         user = User(request_json.get("name"), request_json.get('family'))
-        return {"Created 201": str(user)}
+        return {"Created !": str(user)}, 201
 
 
 def get_user(user_id):

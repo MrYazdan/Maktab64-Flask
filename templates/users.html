@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <title>User List</title>
+</head>
+<body>
+    <div class="w-7/12 mt-8 overflow-hidden mx-auto rounded-xl border-4 border-gray-400 shadow-lg">
+        <h1 class="text-blue-500 text-center py-8 text-2xl font-bold font-italic border-b border-indigo-800 mb-2">Users</h1>
+        <table class="table w-full table-zebra">
+            <thead>
+                <tr class="border-b-2 border-gray-500">
+                    <th class="py-4 text-center">ID</th>
+                    <th class="py-4 text-center">NAME</th>
+                    <th class="py-4 text-center">FAMILY</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if not users %}
+                    <tr>
+                        <td colspan="3">
+                            please create user !!!
+                        </td>
+                    </tr>
+                {% else %}
+                    {% for user in users %}
+                        <tr class="border-b-2 border-gray-300">
+                            <td class="py-3 text-center">{{ user.id }}</td>
+                            <td class="py-3 text-center">{{ user.name }}</td>
+                            <td class="py-3 text-center">{{ user.family }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

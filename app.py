@@ -2,7 +2,7 @@ from flask import Flask
 from views import *
 
 # Configure flask app name
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
 
 # Configure app route
 app.add_url_rule('/', 'index', index)
