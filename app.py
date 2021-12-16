@@ -1,5 +1,5 @@
 from flask import Flask
-from views import index, about, say_hello, sum_func, power_func, redirect_func
+from views import *
 
 # Configure flask app name
 app = Flask(__name__)
@@ -13,6 +13,10 @@ app.add_url_rule('/sum/<int:number1>+<int:number2>', 'sum', sum_func)
 app.add_url_rule('/power/<int:number1>/', 'power', power_func, defaults={'number2': 2})
 app.add_url_rule('/power/<int:number1>/<int:number2>', 'power', power_func)
 app.add_url_rule('/r/<path:link>', 'redirecter', redirect_func)
+app.add_url_rule('/printer/<text>', 'printer', printer_func, methods=['GET', 'POST'])
+app.add_url_rule('/request_info/', 'request_info', requests_func)
+app.add_url_rule('/users', 'users', users, methods=['GET', 'POST'])
+app.add_url_rule('/users/<int:user_id>', 'get_user', get_user)
 
 if __name__ == "__main__":
     app.run()
