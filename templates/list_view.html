@@ -1,0 +1,17 @@
+{% extends "layout/_base.html" %}
+{% block title %}{{ data.page.title }}{% endblock %}
+{% block body %}
+    <section>
+        <div class="mx-auto py-12 w-9/12 gap-8 grid grid-cols-4">
+            {% for post in posts %}
+                <div class="rounded-lg border-b-4 col-span-1 border-gray-400 shadow-lg px-3 bg-gray-200">
+                    <h3 class="text-black py-4 font-bold text-center text-xl ">{{ post.title }}</h3>
+                    <hr>
+                    <p class="text-gray-600 w-full text-justify py-6 text-sm">{{ post.content[0:25] }} ...</p>
+                    <a href="{{ url_for("post_detail_view", post_id=post.id) }}" class="py-3 px-2 rounded-lg my-3 text-white bg-green-500 block w-full font-bold hover:bg-green-600">Read more ...</a>
+                </div>
+            {% endfor %}
+
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "layout/_base.html" %}
+{% block extra_head %}
+    <style>
+        section:nth-child(1) > div {
+            background: orangered !important;
+        }
+    </style>
+{% endblock %}
+{% block title %}{{ data.page.title }}{% endblock %}

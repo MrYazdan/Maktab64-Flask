@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ data.page.base_title }} | {% block title %}Test title{% endblock %}</title>
+    {% include "layout/__stylesheet.html" %}
+    <!--  Extra head  -->
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+<!--  Body  -->
+{% include "layout/__nav.html" %}
+{% block body %}
+    <section>
+        <div class="flex items-center justify-items-center w-full h-96 text-center">
+            <span class="text-center w-full text-6xl text-red-500">{{ data.page.title }}</span>
+        </div>
+    </section>
+{% endblock %}
+{% block extra_footer %}<!--  Extra footer  -->{% endblock %}
+{% include "layout/__footer.html" %}
+</body>
+</html>

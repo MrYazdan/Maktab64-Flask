@@ -9,8 +9,31 @@ base_variables = {
         "title": 'Maktab 64'
     },
 
-    "links": ["index", "about", "hello", "request_info"]
+    "links": ["index", "about", "contact", "hello", "post_list_view"]
 }
+
+posts = [
+    {"id": 1, "title": "Akbar",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 2, "title": "mahdi",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 3, "title": "reza",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 4, "title": "alireza",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 5, "title": "mohammad",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 6, "title": "heidar",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 7, "title": "kian",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 8, "title": "javad",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 9, "title": "shayan",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 10, "title": "mobin",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+]
 
 
 def index():
@@ -19,10 +42,50 @@ def index():
     return render_template("index.html", data=data)
 
 
+def post_list():
+    data = base_variables
+    data['page']['title'] = "Posts"
+    return render_template("list_view.html", data=data, posts=posts)
+
+
+def create_post():
+    data = base_variables
+    data['page']['title'] = "Create a post"
+
+    if request.method == "GET":
+        # form view !
+        print(f"{request.args=}")
+        return render_template("create_view.html", data=data)
+    elif request.method == "POST":
+        # add new post : --> Flush
+        post = {
+            "id": len(posts) + 1,
+            "title": escape(request.form.get('title')),
+            "content": escape(request.form.get('content')),
+        }
+        posts.append(post)
+        return "Post created !", 201
+
+    return "Forbidden Request 403", 403
+
+
+def post_detail(post_id: int):
+    post = posts[post_id - 1]
+    data = base_variables
+    data['page']['title'] = post['title']
+    return render_template("detail_view.html", data=data, post=post)
+
+
 def about():
     data = base_variables
     data['page']['title'] = "About page !"
     return render_template("about.html", data=data)
+
+
+def contact_us():
+    data = base_variables
+    data['page']['title'] = "Contact-us page !"
+    return render_template("contact-us.html", data=data)
 
 
 def say_hello():

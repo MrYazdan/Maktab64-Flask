@@ -1,0 +1,10 @@
+{% extends "layout/_base.html" %}
+{% block title %}{{ data.page.title }}{% endblock %}
+{% block body %}
+    <section>
+        <div class="mx-auto my-12 py-12 w-9/12 rounded-lg border-4 border-gray-400 shadow-2xl px-5 bg-gray-200">
+            <h1 class="text-black py-6 font-bold text-center text-3xl ">{{ post.title }}</h1>
+            <hr>
+            <p class="text-gray-600 w-full text-justify py-8 text-xl">{{ post.content }}</p></div>
+    </section>
+{% endblock %}

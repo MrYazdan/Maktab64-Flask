@@ -1,0 +1,15 @@
+{% extends "layout/_base.html" %}
+{% block title %}{{ data.page.title }}{% endblock %}
+{% block body %}
+    <section>
+        <div class="mx-auto my-12 py-12 w-7/12 rounded-lg border-4 border-gray-400 shadow-2xl px-5 bg-gray-200 grid grid-cols-1 gap-8">
+            <h2 class="text-center text-4xl">Create a new post</h2>
+            <hr class="my-8">
+            <form action="{{ url_for("create_view") }}" method="POST">
+                <input type="text" name="title"  placeholder="Post title" class="w-full block rounded-xl text-2xl border-8 focus:border-yellow-500 border-green-500 p-3 mb-6">
+                <textarea name="content" placeholder="Post content" class="w-full block rounded-xl h-36 text-2xl border-8 focus:border-yellow-500 border-green-500 p-3 mb-6"></textarea>
+                <input type="submit" class="w-full block rounded-xl text-3xl border-8 focus:border-green-500 text-white text-center bg-green-500 hover:bg-green-600 cursor-pointer border-green-500 px-3 py-5  mb-6">
+            </form>
+        </div>
+    </section>
+{% endblock %}
