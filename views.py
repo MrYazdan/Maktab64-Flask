@@ -1,24 +1,42 @@
 from models import User
 from utils import template_pattern
-from flask import redirect, url_for, request, render_template
+from flask import redirect, url_for, request, render_template, escape, render_template_string
+
+base_variables = {
+    "page": {
+        "base_title": "Maktab - Flask",
+        "lang": 'en-US',
+        "title": 'Maktab 64'
+    },
+
+    "links": ["index", "about", "hello", "request_info"]
+}
 
 
 def index():
-    return template_pattern("Hello Maktab 64!!!")
+    data = base_variables
+    data['page']['title'] = "Index page !"
+    return render_template("index.html", data=data)
 
 
 def about():
-    return render_template("about.html")
+    data = base_variables
+    data['page']['title'] = "About page !"
+    return render_template("about.html", data=data)
 
 
-def say_hello(name):
+def say_hello():
     from datetime import datetime as dt
     now = dt.now()
     # return render_template("hi.html", datetime=now, name=name)
-    data = {
-        "datetime": now,
-        "name": name
-    }
+    import random
+
+    data = base_variables
+    data['page']['title'] = "Hello page !"
+    data["datetime"] = now
+    data["name"] = request.args.get('name', 'Akbar')
+    data["number"] = random.randint(-9999, -1)
+
     return render_template("hi.html", data=data)
 
 
