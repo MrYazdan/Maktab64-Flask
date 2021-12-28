@@ -9,7 +9,7 @@ base_variables = {
         "title": 'Maktab 64'
     },
 
-    "links": ["index", "about", "contact", "hello", "post_list_view"]
+    "links": ["home", "about", "contact", "posts", "new_post"]
 }
 
 posts = [
@@ -33,6 +33,19 @@ posts = [
      "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
     {"id": 10, "title": "mobin",
      "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 11, "title": "Joomoong",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 12, "title": "Sohrab",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 13, "title": "Yazdan",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 14, "title": "Hosein",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 15, "title": "Amir Ali",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+    {"id": 16, "title": "NarenJ",
+     "content": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus cumque harum labore magni minima quia quod reprehenderit veritatis voluptatibus? Accusamus aliquam cumque eius expedita fugit hic id modi quam rerum."},
+
 ]
 
 
@@ -50,12 +63,12 @@ def post_list():
 
 def create_post():
     data = base_variables
-    data['page']['title'] = "Create a post"
+    data['page']['title'] = "New post"
 
     if request.method == "GET":
         # form view !
-        print(f"{request.args=}")
         return render_template("create_view.html", data=data)
+
     elif request.method == "POST":
         # add new post : --> Flush
         post = {

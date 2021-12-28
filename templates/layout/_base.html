@@ -12,12 +12,14 @@
 {% include "layout/__nav.html" %}
 {% block body %}
     <section>
-        <div class="flex items-center justify-items-center w-full h-96 text-center">
+        <div class="flex items-center justify-items-center w-full h-screen text-center">
             <span class="text-center w-full text-6xl text-red-500">{{ data.page.title }}</span>
         </div>
     </section>
 {% endblock %}
 {% block extra_footer %}<!--  Extra footer  -->{% endblock %}
 {% include "layout/__footer.html" %}
+{#<script src="/static/bg_color.js"></script>#}
+{#<script src="{{ url_for('static', filename="js/bg_color.js") }}"></script>#}
 </body>
 </html>

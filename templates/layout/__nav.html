@@ -2,9 +2,7 @@
 <section>
     <div class="w-full grid grid-cols-{{ data.links | length }} gap-8 text-center bg-indigo-400 text-white">
         {% for endpoint in data.links %}
-            <div class="text-center py-6 hover:bg-black bg-opacity-10"><a target="_blank"
-                                                                          href="{{ url_for(endpoint) }}">{{ endpoint }}</a>
-            </div>
+            <div class=""><a class="text-center block py-6 hover:bg-black bg-opacity-10" href="{{ url_for(endpoint) }}">{{ endpoint.replace("_"," ") }}</a></div>
         {% endfor %}
     </div>
 </section>
