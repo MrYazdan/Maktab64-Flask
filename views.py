@@ -1,6 +1,6 @@
 from models import User
-from utils import template_pattern
-from flask import redirect, url_for, request, render_template, escape, render_template_string, Response
+from utils import template_pattern, key_creator, get_user_by_cookie
+from flask import redirect, url_for, request, render_template, escape, make_response, render_template_string, Response
 
 base_variables = {
     "page": {
@@ -9,7 +9,9 @@ base_variables = {
         "title": 'Maktab 64'
     },
 
-    "links": ["home", "about", "contact", "posts", "new_post"]
+    "links": ["home", "about", "contact", "posts", "new_post"],
+
+    "user": None,
 }
 
 posts = [
@@ -49,44 +51,107 @@ posts = [
 ]
 
 users = [
-    {'id': 0, 'name': 'shayan', 'password': '123456'},
-    {'id': 1, 'name': 'mobin', 'password': '654321'}
+    {'id': 0, 'name': 'shayan', 'password': '123456', 'key': ''},
+    {'id': 1, 'name': 'mobin', 'password': '654321', 'key': ''}
 ]
+
+
+# user:
+def login():
+    data = base_variables
+    data['user'] = get_user_by_cookie(request, users)
+    data['page']['title'] = "Login form"
+
+    if request.method == "GET":
+        # form view !
+        return render_template("login_view.html", data=data)
+
+    elif request.method == "POST":
+        # login user
+        name = escape(request.form.get('name'))
+        password = escape(request.form.get('password'))
+
+        # check exists user !!!
+        for user in users:
+            if user['name'] == name and user['password'] == password:
+                # loggin success !
+                key = str(key_creator())
+                user['key'] = key
+
+                # set cookies
+                resp = make_response(redirect(url_for('home')))
+                resp.set_cookie('user_logged_in_id', str(user['id']))
+                resp.set_cookie('user_logged_in_key', key)
+
+                return resp
+
+        return "Server Error!", 500
+
+    return "Forbidden Request 403", 403
+
+
+def register():
+    data = base_variables
+    data['user'] = get_user_by_cookie(request, users)
+    data['page']['title'] = "Register form"
+
+    if request.method == "GET":
+        # form view !
+        return render_template("register_view.html", data=data)
+
+    elif request.method == "POST":
+        # get user field
+        name = escape(request.form.get('name'))
+        password = escape(request.form.get('password'))
+
+        for user in users:
+            if user['name'] == name:
+                return "User exists!", 500
+
+        # register successful !
+        user = {
+            "id": len(users),
+            "name": escape(request.form.get('name')),
+            "password": escape(request.form.get('password')),
+            "key": '',
+        }
+
+        users.append(user)
+
+        return redirect(url_for('home'))
+
+    return "Forbidden Request 403", 403
+
+
+def logout():
+    base_variables['user'] = None
+    resp = make_response(redirect(url_for('home')))
+    resp.delete_cookie('user_logged_in_id')
+    resp.delete_cookie('user_logged_in_key')
+
+    return resp
 
 
 def index():
     data = base_variables
-    view_count = 0
+    data['user'] = get_user_by_cookie(request, users)
 
     data['page']['title'] = "Index page !"
     res = Response(render_template("index.html", data=data))
 
-    from random import randint
-    from datetime import datetime, timedelta
-
-    number = randint(1000, 9999)
-    # print(f"{number=}")
-    # print(f"{datetime.now()=}")
-    # res.set_cookie("number1", str(number))
-    # res.set_cookie("number2", str(randint(1000, 9999)))
-    # res.set_cookie("number3", str(randint(1000, 9999)))
-
-    # Get cookies
-    # request.cookies['number3']
-
-    # remove cookies
-    res.delete_cookie('number3')
     return res
 
 
 def post_list():
     data = base_variables
+    data['user'] = get_user_by_cookie(request, users)
     data['page']['title'] = "Posts"
     return render_template("list_view.html", data=data, posts=posts)
 
 
 def create_post():
     data = base_variables
+    data['user'] = get_user_by_cookie(request, users)
     data['page']['title'] = "New post"
 
     if request.method == "GET":
@@ -109,18 +174,21 @@ def create_post():
 def post_detail(post_id: int):
     post = posts[post_id - 1]
     data = base_variables
+    data['user'] = get_user_by_cookie(request, users)
     data['page']['title'] = post['title']
     return render_template("detail_view.html", data=data, post=post)
 
 
 def about():
     data = base_variables
+    data['user'] = get_user_by_cookie(request, users)
     data['page']['title'] = "About page !"
     return render_template("about.html", data=data)
 
 
 def contact_us():
     data = base_variables
+    data['user'] = get_user_by_cookie(request, users)
     data['page']['title'] = "Contact-us page !"
     return render_template("contact-us.html", data=data)
 
@@ -167,19 +235,18 @@ def requests_func():
         Args : {request.args}
     </pre>"""
 
+# def users():
+#     if request.method == "GET":
+#         user_list = User.__users__
+#         # return {k: vars(user_list[k]) for k in user_list}
+#         return render_template("users.html", users=user_list.values() if user_list else False)
+#
+#     elif request.method == "POST":
+#         request_json = request.json
+#         user = User(request_json.get("name"), request_json.get('family'))
+#         return {"Created !": str(user)}, 201
 
-def users():
-    if request.method == "GET":
-        user_list = User.__users__
-        # return {k: vars(user_list[k]) for k in user_list}
-        return render_template("users.html", users=user_list.values() if user_list else False)
 
-    elif request.method == "POST":
-        request_json = request.json
-        user = User(request_json.get("name"), request_json.get('family'))
-        return {"Created !": str(user)}, 201
-
-
-def get_user(user_id):
-    user_dict = User.__users__
-    return vars(user_dict[user_id])
+# def get_user(user_id):
+#     user_dict = User.__users__
+#     return vars(user_dict[user_id])
