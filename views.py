@@ -1,6 +1,6 @@
 from models import User
 from utils import template_pattern
-from flask import redirect, url_for, request, render_template, escape, render_template_string
+from flask import redirect, url_for, request, render_template, escape, render_template_string, Response
 
 base_variables = {
     "page": {
@@ -48,11 +48,35 @@ posts = [
 
 ]
 
+users = [
+    {'id': 0, 'name': 'shayan', 'password': '123456'},
+    {'id': 1, 'name': 'mobin', 'password': '654321'}
+]
+
 
 def index():
     data = base_variables
+    view_count = 0
+
     data['page']['title'] = "Index page !"
-    return render_template("index.html", data=data)
+    res = Response(render_template("index.html", data=data))
+
+    from random import randint
+    from datetime import datetime, timedelta
+
+    number = randint(1000, 9999)
+    # print(f"{number=}")
+    # print(f"{datetime.now()=}")
+    # res.set_cookie("number1", str(number))
+    # res.set_cookie("number2", str(randint(1000, 9999)))
+    # res.set_cookie("number3", str(randint(1000, 9999)))
+
+    # Get cookies
+    # request.cookies['number3']
+
+    # remove cookies
+    res.delete_cookie('number3')
+    return res
 
 
 def post_list():
